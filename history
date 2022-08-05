@@ -1,0 +1,15 @@
+
+docker run --rm --init -v $PWD:/home/marp/app -e LANG=$LANG -p 8080:8080 -p 37717:37717 marpteam/marp-cli -s .
+
+---
+docker build -t demo . --no-cache
+docker exec ubuntu_bash touch demo.txt
+
+FROM python:3.10-slim
+ENV PYTHONUNBUFFERED True
+ENV APP_HOME /app
+ENV PORT 80
+WORKDIR $APP_HOME
+COPY ./app /app
+RUN pip install fastapi uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8888"]
